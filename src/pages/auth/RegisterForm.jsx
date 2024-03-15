@@ -1,4 +1,4 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import React, { useEffect, useState } from 'react';
 import { useForm } from '../../hooks/useForm'
 import {
@@ -14,6 +14,8 @@ import {
   useColorModeValue,
   Heading,
   Center,
+  Alert,
+  AlertIcon,
 } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import { startCreatingUser } from '../../store/auth';
@@ -21,6 +23,12 @@ import { startCreatingUser } from '../../store/auth';
 
 export const RegisterForm = () => {
   const disptach = useDispatch();
+  const actualUsuario = useSelector(usuario => usuario.auth);
+  
+  useEffect(() => {
+    if(actualUsuario === 'authenticated')
+     return navigate("/admin/dashboard", replace)
+  })
 
   const { nombres, apellidos, nombreProveedorEmpresa, correoElectronico, nit, contrasenia, confirmacionContrasenia} = useForm({
           nombres: '',
@@ -50,6 +58,8 @@ export const RegisterForm = () => {
     'url("./src/assets/images/fnd_py04.jpg")',
   ];
 
+  const [error, setError] = useState(actualUsuario.errorMessage);
+
   
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -69,8 +79,10 @@ export const RegisterForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(formData)
 
-    disptach(startCreatingUser(formData.nombres,formData.apellidos,formData.nombreProveedorEmpresa,formData.nit,formData.correoElectronico,formData.contrasenia))
+    disptach(startCreatingUser(formData))
+    setError(actualUsuario.errorMessage);
   };
 
   return (
@@ -192,8 +204,19 @@ export const RegisterForm = () => {
               >
                 ¿Es empleado?
               </Checkbox>
+             
             </FormControl>
+          
           </SimpleGrid>
+          <Box width="full" pb={4} pt={4} spacing={5}>
+              {error && (
+                <Alert status="error" variant="subtle">
+                  <AlertIcon />
+                  {error}
+                </Alert>
+          
+              )}
+            </Box>
           <Button
             type="submit"
             colorScheme="green"
@@ -205,7 +228,7 @@ export const RegisterForm = () => {
          
         </form>
         <Flex justifyContent="center" mt={5}>
-              <Link color="teal.500" to="/login" >
+              <Link color="teal.500" to="/auth/login" >
                 Volver al inicio de sesión
               </Link>
             </Flex>

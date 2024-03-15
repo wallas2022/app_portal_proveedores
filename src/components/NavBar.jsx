@@ -1,15 +1,13 @@
 import { BellIcon } from "@chakra-ui/icons";
-import { Box, Flex, Text, Heading, Button, Spacer,HStack, Image, IconButton } from "@chakra-ui/react";
+import { Box, Flex, Text, Heading, Button, Spacer,HStack, Image, IconButton, Avatar } from "@chakra-ui/react";
 import { MenuPerfil } from "./MenuPerfil";
 import SearchBar from "./Dashboard/SearchBar";
 import { Link } from "react-router-dom";
-import { AuthContext } from "../pages/auth/context/AuthContext";
-import { useContext } from "react";
-
+import AvatarUsuario from './AvatarUsuario'
 
 export default function NavBar() {
 
-  const { user,logout } = useContext( AuthContext )
+
   return (
 
     <Flex as="nav" p="8px" alignItems={"center"} borderBottom="1px"  top={"0"} left={"0"}>
@@ -43,7 +41,7 @@ export default function NavBar() {
               { user?.nombres }
             </Box> */}
             <MenuPerfil />
-        
+            <AvatarUsuario />
             </HStack>
     </Flex>
     // <Flex bg={"gra.200"} justify={"space-between"} wrap={"wrap"} gap={"2"}>

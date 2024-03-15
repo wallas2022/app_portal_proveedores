@@ -13,6 +13,15 @@ export const authSlice = createSlice({
         errorMessage: null,
     },
     reducers: {
+        registered: ( state, { payload } ) => {
+            state.status = 'registered', // 'checking', 'not-authenticated', 'authenticated'
+            state.uid = payload.id;
+            state.email = payload.email;
+            state.displayName = payload.displayName;
+            state.photoURL = payload.photoURL;
+            state.errorMessage = null;
+           
+        },
         login: ( state, { payload } ) => {
             state.status = 'authenticated', // 'checking', 'not-authenticated', 'authenticated'
             state.uid = payload.id;
@@ -20,9 +29,13 @@ export const authSlice = createSlice({
             state.displayName = payload.displayName;
             state.photoURL = payload.photoURL;
             state.errorMessage = null;
+           
         },
    
         logout: ( state, { payload } ) => {
+
+            console.log("desconecta");
+            console.log(payload?.errorMessage);
             state.status = 'not-authenticated', // 'checking', 'not-authenticated', 'authenticated'
             state.uid = null;
             state.email = null;
@@ -40,4 +53,4 @@ export const authSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { login, logout, checkingCredentials } = authSlice.actions;
+export const { login, logout, checkingCredentials, registered } = authSlice.actions;

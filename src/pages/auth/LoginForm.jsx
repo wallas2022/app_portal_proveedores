@@ -2,6 +2,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 
 import {
+  Alert,
+  AlertIcon,
   Box,
   Button,
   Checkbox,
@@ -15,20 +17,37 @@ import {
   Text,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, redirect, useNavigate } from 'react-router-dom';
 import { AuthContext } from './context/AuthContext';
 import { useForm } from '../../hooks/useForm';
 import { checkingAuthentication, startSignIn } from '../../store/auth';
+import { replace } from 'formik';
 
 
 
 
 export const LoginForm = () => {
-  const { status } = useSelector( state => state.auth );
-  const dispatch = useDispatch();
-  const { login } = useContext( AuthContext)
+ 
+  // const [usuario, setUsuario] = useState(null);
+  const actualUsuario = useSelector(usuario => usuario.auth);
+ 
+  useEffect(() => {
+    if(actualUsuario === 'authenticated')
+     return navigate("/admin/dashboard", replace)
+  })
+     
 
-  const isAuthenticating = useMemo( () => status === 'checking', [status]);
+  
+    // const payload = useSelector(seleccionarPayload);
+    
+
+
+
+  const dispatch = useDispatch();
+
+  let navigate = useNavigate();
+
+  // const isAuthenticating = useMemo( () => state === actualUsuario.status, [state]);
   // const onLogin = () =>{
   //   login( 'Walter Rosales ');
   //   navigate('/registro',{ replace: true});
@@ -37,7 +56,8 @@ export const LoginForm = () => {
   const [password, setPassword] = useState('');
   const [isEmployee, setIsEmployee] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  
+  const [error, setError] = useState(actualUsuario.errorMessage);
+
   
 
    // Array de URLs de imágenes
@@ -57,15 +77,45 @@ export const LoginForm = () => {
     return () => clearInterval(intervalId);
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit =  (e) => {
     e.preventDefault();
-     login( 'Walter Rosales ');
-    navigate('/dashboard',{ replace: true});
+    
+    // Deshabilitar el botón
+    // document.getElementById('login-button').disabled = true;
     // Aquí manejarías el envío del formulario
-     dispatch( startSignIn({correo_electronico,password}))
+
+     dispatch(startSignIn({correo_electronico,password}))
+
+       
+ 
+  
+      if(actualUsuario.status == 'authenticated' ){
+              console.log("redirecciona a dashboard")
+               //  navigate("/admin/dashboard", replace)
+            navigate("/admin/dashboard", replace)
+      }
+      if(actualUsuario.status === 'not-authenticated' ){
+
+        console.log("muestra error")
+            setError(actualUsuario.errorMessage);
+           navigate("auth/login", replace)
+      }
+
+     
+      
+
+    
+
+    
+
+  
+  
+  
+     
+     
     // console.log({ correo_electronico, password, isEmployee });
   };
-  let navigate = useNavigate();
+ 
   return (
     <Flex
       minHeight="100vh"
@@ -109,6 +159,9 @@ export const LoginForm = () => {
         <form 
         onSubmit={handleSubmit}
         >
+       
+        
+      <Stack spacing={4}></Stack>
           <Stack spacing={4}>
             <FormControl>
               <FormLabel>Email</FormLabel>
@@ -125,7 +178,7 @@ export const LoginForm = () => {
               <Input
                 type="password"
                 placeholder="Ingresa tu contraseña"
-            
+                // id='login-button'
                 required
                 aria-required="true"
                 onChange={(e) => setPassword(e.target.value)}
@@ -137,10 +190,16 @@ export const LoginForm = () => {
             <Checkbox isChecked={isEmployee} onChange={(e) => setIsEmployee(e.target.checked)}>
               ¿Empleado?
             </Checkbox>
+            {error && (
+            <Alert status="error" variant="subtle">
+              <AlertIcon />
+              {error}
+            </Alert>
+          )}
             <Stack spacing={6}>
               <Button
                 type="submit"
-                disabled= { isAuthenticating }
+                // disabled= { isAuthenticating }
                 colorScheme="green"
               >
                 Iniciar sesión
@@ -148,12 +207,12 @@ export const LoginForm = () => {
               <Button
                 variant="outline"
                 colorScheme="green"
-                onClick={() =>{ navigate('/registro') }  }
+                onClick={() =>{ navigate('/auth/registro') }  }
               >
                 Registro
               </Button>
             </Stack>
-            <Link color="teal.500" href="#" onClick={() => navigate('/recuperar_clave')}  textAlign={"center"} >
+            <Link color="teal.500" href="#" onClick={() => navigate('/auth/recuperar_clave')}  textAlign={"center"} >
               Se me olvidó la contraseña
             </Link>
           </Stack>

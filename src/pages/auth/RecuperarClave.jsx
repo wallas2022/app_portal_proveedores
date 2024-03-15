@@ -94,7 +94,7 @@ export const RecuperarClave = () => {
               Enviar
             </Button>
             <Flex justifyContent="center">
-              <Link color="teal.500" href="/login">
+              <Link color="teal.500" href="/auth/login">
                 Volver al inicio de sesión
               </Link>
             </Flex>

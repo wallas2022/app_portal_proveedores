@@ -1,4 +1,4 @@
-import { SimpleGrid } from '@chakra-ui/react';
+import { SimpleGrid, Text,Box } from '@chakra-ui/react';
 import {ListaOrdenes} from '../components/Dashboard/ListaOrdenes'; // Asume que este es tu componente de órdenes de compra
 import {ListaFacturas} from '../components/Dashboard/ListaFacturas'; // Asume que este es tu componente de facturas registradas
 import {UltimosContactos} from '../components/Dashboard/UltimosContactos'; // Asume que este es tu componente de últimos contactos
@@ -9,6 +9,8 @@ import invoices from '../assets/datos/invoices.json';
 import contacts from '../assets/datos/contacts.json';
 import BarChartComponent from '../components/Dashboard/graficas';
 import PieChartComponent from '../components/Dashboard/graficaspie';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const data = [
   {
@@ -28,9 +30,25 @@ const data2 = [
 ];
   
 export  function Dashboard(){
+  const [nombresUsuario, setNombresUsuario] = useState('')
+  const {actualUsuario} = useSelector( state => state.auth)
+
+  useEffect(()=>{
+    const usuario= JSON.parse(localStorage.getItem('userData'))
+    console.log(usuario);
+    if(usuario){
+       setNombresUsuario(usuario['displayName'])
+    }
+  },[])
+  
+
   return(
     <>
+     <Box>
+          <Text fontWeight={'bold'}><h2>Hola, {nombresUsuario} !!</h2> </Text>
+        </Box>
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing="20px">
+       
       <BarChartComponent data={data} />
       <PieChartComponent data={data2} />
       <ListaOrdenes orders={orders} />

@@ -1,13 +1,17 @@
 
 import { Navigate } from 'react-router-dom'
-import React, { useContext } from 'react'
-import { AuthContext } from '../pages/auth/context/AuthContext';
+import { useSelector } from 'react-redux';
 
 
 export const PublicRoute = ({children}) => {
+   
+const actualUsuario = useSelector( state => state.auth)
 
-  const { logged } =  useContext( AuthContext);
-  return  (!logged)
-  ? children
-  : <Navigate to="/dashboard" /> 
+return  ( actualUsuario.status === 'registered')
+  ? <Navigate to="/auth/confirmacion_registro" replace />
+  : ( actualUsuario.status === 'authenticated')
+  ? <Navigate to="/admin/dashboard" replace />
+  : children  
+
+
 }
