@@ -1,6 +1,6 @@
 
 
-import { registerUser, singIn } from "../../providers/endpoints";
+import { registerUser, registerUserChildren, singIn } from "../../providers/endpoints";
 import { checkingCredentials, logout, login, registered } from "./authSlice";
 
 
@@ -16,10 +16,10 @@ export const startSignIn = ({correo_electronico, password}) => {
        
        await singIn({correo_electronico, password}).then((result)=>{
      
-        //  console.log(result)
+       
     
         if (result.ok){ 
-            
+            console.log(result);
            return  dispatch(login(result));
         }
         else {
@@ -73,5 +73,58 @@ export const startCreatingUser = (nombres, apellidos,empresa,nit,correo_electron
 
        
         }
+
+}
+
+
+export const startCreatingUserChildren = (nombres, apellidos,empresa,nit,correo_electronico,password,roleId,parentId) => {
+    return async( dispatch ) => {
+          
+        
+        const err = ""
+       await registerUserChildren(nombres, apellidos,empresa,nit,correo_electronico,password,roleId,parentId)
+       
+        .then((resp)=> {
+          
+             console.log(resp);
+            if( !resp.ok ){
+                 const error1 = {ok: resp.ok, errorMessage:  resp.errorMessage.error}
+                 return error1
+                 
+            }
+          
+                 console.log(resp);
+                  
+                    
+                 return  ok
+
+                 }).catch((error) =>{
+                    console.log(error);
+                    const error1 = {ok: error.ok, errorMessage:  error.errorMessage.error}
+                    return error1
+                    
+                 });
+
+       
+        }
+
+}
+
+
+
+export const obtenerDatosLogeado = ()=>{
+ 
+       const data = JSON.parse(localStorage.getItem('userData'))
+       const payload = {
+        // id: data.id,
+        uid:data.id,
+        displayName: data.displayName,
+        email: data.email,
+        // nit: data.nit,
+        nombre_empresa:  data.nombre_empresa
+
+        }
+       
+ return payload
 
 }

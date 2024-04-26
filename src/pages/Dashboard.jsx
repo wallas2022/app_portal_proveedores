@@ -30,22 +30,14 @@ const data2 = [
 ];
   
 export  function Dashboard(){
-  const [nombresUsuario, setNombresUsuario] = useState('')
-  const {actualUsuario} = useSelector( state => state.auth)
 
-  useEffect(()=>{
-    const usuario= JSON.parse(localStorage.getItem('userData'))
-    console.log(usuario);
-    if(usuario){
-       setNombresUsuario(usuario['displayName'])
-    }
-  },[])
-  
+  const actualUsuario = useSelector( state => state.auth)
+
 
   return(
     <>
      <Box>
-          <Text fontWeight={'bold'}><h2>Hola, {nombresUsuario} !!</h2> </Text>
+          <Text fontWeight={'bold'}>Hola, {actualUsuario.displayName} !! </Text>
         </Box>
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing="20px">
        

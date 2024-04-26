@@ -17,7 +17,7 @@ export const RootLayout = () =>{
 
   useEffect(()=>{
     const usuario= JSON.parse(localStorage.getItem('userData'))
-    console.log(usuario);
+
     if(usuario){
        setNombresUsuario(usuario['displayName'])
     }

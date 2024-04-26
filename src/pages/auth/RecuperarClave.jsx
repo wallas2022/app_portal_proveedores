@@ -12,9 +12,11 @@ import {
   Link,
   Text,
 } from '@chakra-ui/react';
+import axios from 'axios';
 
 export const RecuperarClave = () => {
   const [email, setEmail] = useState('');
+  const [mensaje, setMensaje] = useState('');
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
   // Array de URLs de imágenes
@@ -33,10 +35,23 @@ export const RecuperarClave = () => {
     return () => clearInterval(intervalId);
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const correo_electronico = email
+    
     // Aquí manejarías el envío del correo electrónico para la recuperación de la contraseña
-    console.log('Enviar instrucciones de recuperación a:', email);
+    try {
+      const response = await axios.post('http://localhost:3000/usuarios/recuperar_clave_email', {
+        correo_electronico,
+      });
+      console.log(response)
+      setMensaje('Correo electrónico enviado correctamente, por favor revisar tu bandeja de correo.');
+    } catch (error) {
+      setMensaje('Hubo un error: '+ error);
+    }
+   
+    
+    
   };
 
   return (
@@ -44,7 +59,7 @@ export const RecuperarClave = () => {
       minHeight="100vh"
       align="center"
       justifyContent="center"      
-      // backgroundImage={images[currentImageIndex]}
+      backgroundImage={images[currentImageIndex]}
       backgroundColor={"gray.50"}
       backgroundSize="cover"
       transition="background-image 1s ease-in-out" // Añade esta línea para la transición
@@ -86,6 +101,7 @@ export const RecuperarClave = () => {
                 value={email}
               />
             </FormControl>
+            {mensaje && <p>{mensaje}</p>}
             <Button
               type="submit"
               colorScheme="green"

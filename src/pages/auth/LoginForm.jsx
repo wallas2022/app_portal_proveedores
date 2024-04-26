@@ -37,21 +37,11 @@ export const LoginForm = () => {
   })
      
 
-  
-    // const payload = useSelector(seleccionarPayload);
-    
-
-
-
   const dispatch = useDispatch();
 
   let navigate = useNavigate();
 
-  // const isAuthenticating = useMemo( () => state === actualUsuario.status, [state]);
-  // const onLogin = () =>{
-  //   login( 'Walter Rosales ');
-  //   navigate('/registro',{ replace: true});
-  // }
+
   const [correo_electronico, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isEmployee, setIsEmployee] = useState(false);
@@ -101,19 +91,6 @@ export const LoginForm = () => {
            navigate("auth/login", replace)
       }
 
-     
-      
-
-    
-
-    
-
-  
-  
-  
-     
-     
-    // console.log({ correo_electronico, password, isEmployee });
   };
  
   return (
@@ -122,8 +99,8 @@ export const LoginForm = () => {
       width="full"
       align="center"
       justifyContent="center"
-      // backgroundImage={images[currentImageIndex]}
-      backgroundColor={"gray.50"}
+      backgroundImage={images[currentImageIndex]}
+     // backgroundColor={"gray.50"}
       backgroundSize="cover"
       transition="background-image 1s ease-in-out" // Añade esta línea para la transición
       sx={{
@@ -156,8 +133,7 @@ export const LoginForm = () => {
         </Box>
    
           
-        <form 
-        onSubmit={handleSubmit}
+        <form onSubmit={handleSubmit}
         >
        
         

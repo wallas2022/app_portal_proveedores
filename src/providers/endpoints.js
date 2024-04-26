@@ -50,7 +50,7 @@ export const singIn = async ( { correo_electronico, password})=>{
 
 export const registerUser = async (data) => {
        const username = data.nombres + "." +data.apellidos;
-         const telefono = '123456789';
+       const telefono = '123456789';
        const celular = '123131313';
        const estado = true;
 
@@ -95,7 +95,94 @@ export const registerUser = async (data) => {
      
     
 }
+export const registerUserChildren  = async (data) => {
+  console.log("datos",data)
+  const username = data.nombres + "." +data.apellidos;
+       const telefono = '123456789';
+       const celular = '123131313';
+       const nit = '8999999'
+       const estado = true;
+       const nombre_empresa = "no obligatorio"
+
+       const userData = {
+        username: username, // Esto es equivalente a username: username
+        nombres: data.nombres,
+        apellidos: data.apellidos,
+        nit,
+        nombre_empresa: nombre_empresa,
+        correo_electronico: data.correo_electronico,
+        telefono,
+        celular,
+        estado,
+        parentId: data.parentId,
+        roleId: parseInt(data.roleId)
+    };
+       
+
+        console.log("userData",userData)
+       return  await  axios.post('http://localhost:3000/usuarios/registro_usuario_hijo',userData)
+         .then((response)=>{
+             // cambio 
+             console.log(response)
+             if( response.status === 200 ){
+                    const {id,nombres,apellidos,nombre_empresa} = response.data.usuario;
+                    //errores
+                    return {
+                        ok: true,
+                        usuario:response.data.usuario
+                    }
+             }    
+         }).catch((error)=>{
+            
+                    console.log(error);
+            return { 
+            
+                    ok: false,
+                    errorMessage: error.response.data
+                  }
+
+          })
+
+}
 
 export function isAuthenticated() {
-    return localStorage.getItem('isAuthenticated') === 'true';
+    if(localStorage.getItem('isAuthenticated') === 'true'){
+        return true
+     }
+     else{
+      return false
+     };
+}
+
+export const listUsuarios = async(data) => {
+
+    const usuarioData = { id:data.id}
+    const userData = JSON.parse(localStorage.getItem('userData'))
+    //console.log(userData);
+  if(!usuarioData.id){ // si en caso al refrescar la pagina se pierde el id del redux, lo almacenamos
+                    // en localstorage para recuperarlo.
+     usuarioData.id = parseInt(userData.id)
+   }
+    return await axios.get(`http://localhost:3000/usuarios/lista/${usuarioData.id}`)
+                            .then((response) => {
+                                    // console.log(response.data.result)
+                              if( response.status === 200 || response.status === 201 ){
+                                 const usuarios = response.data
+                              
+                                 return {
+                                        ok: true,
+                                        usuarios: usuarios
+                                 }
+                              }
+                            })
+                            .catch((error) => {
+
+                              return { 
+            
+                                ok: false,
+                                error: error.response.data
+                              }
+
+                            })
+
 }

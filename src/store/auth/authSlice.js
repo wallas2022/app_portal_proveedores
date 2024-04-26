@@ -4,10 +4,10 @@ export const authSlice = createSlice({
     name: 'auth',
     initialState: {
         status:'checking',
-        id: null,
+        uid: null,
         email: null,
-        nombre_empresa: null,
-        nit: null,
+        // nombre_empresa: null,
+        // nit: null,
         displayName: null,
         photoURL: null,
         errorMessage: null,
@@ -34,14 +34,14 @@ export const authSlice = createSlice({
    
         logout: ( state, { payload } ) => {
 
-            console.log("desconecta");
-            console.log(payload?.errorMessage);
+            
             state.status = 'not-authenticated', // 'checking', 'not-authenticated', 'authenticated'
             state.uid = null;
             state.email = null;
             state.displayName = null;
             state.photoURL = null;
             state.errorMessage = payload?.errorMessage;
+          
         },
        
         checkingCredentials: (state) => {

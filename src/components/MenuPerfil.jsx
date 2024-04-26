@@ -59,12 +59,14 @@ export const  MenuPerfil = () => {
             
             
             <MenuList variant="solid">
+            <MenuItem as={Link} to="/admin/perfil" bg={"brand.700"} _hover={{ bg: 'brand.600', color: 'white' }} >Perfil</MenuItem>
               <MenuItem as={Link} to="/admin/empresas" bg={"brand.700"} _hover={{ bg: 'brand.600', color: 'white' }} >
                 Empresas
               </MenuItem>
+
               <MenuItem as={Link} to="/admin/usuarios" bg={"brand.700"} _hover={{ bg: 'brand.600', color: 'white' }} >Usuarios</MenuItem>
               <MenuItem as={Link} to="/admin/roles" bg={"brand.700"} _hover={{ bg: 'brand.600', color: 'white' }} >Roles</MenuItem>
-              <MenuItem as={Link} to="/admin/perfil" bg={"brand.700"} _hover={{ bg: 'brand.600', color: 'white' }} >Perfil</MenuItem>
+              <MenuItem as={Link} to="/admin/permisos" bg={"brand.700"} _hover={{ bg: 'brand.600', color: 'white' }} >Permisos</MenuItem>
               <MenuItem  bg={"brand.700"} _hover={{ bg: 'brand.600', color: 'white' }}  onClick={onLogout}>Logout</MenuItem>
             </MenuList>
           </Menu>

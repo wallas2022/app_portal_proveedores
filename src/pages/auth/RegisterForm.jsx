@@ -79,8 +79,6 @@ export const RegisterForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData)
-
     disptach(startCreatingUser(formData))
     setError(actualUsuario.errorMessage);
   };
@@ -91,8 +89,8 @@ export const RegisterForm = () => {
     width="full"
     align="center"
     justifyContent="center"
-    // backgroundImage={images[currentImageIndex]}
-    backgroundColor={"gray.50"}
+     backgroundImage={images[currentImageIndex]}
+   // backgroundColor={"gray.50"}
     backgroundSize="cover"
     transition="background-image 1s ease-in-out" // Añade esta línea para la transición
     sx={{
